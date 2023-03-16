@@ -44,3 +44,9 @@ if(BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
 endif()
+
+install(DIRECTORY include/tinynurbs/
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/include/${PROJECT_NAME}
+  # FILES_MATCHING 
+  # PATTERN "*.xml"
+)
