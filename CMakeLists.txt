@@ -36,7 +36,10 @@ else()
     set(GLM_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glm)
     target_include_directories(tinynurbs INTERFACE $<BUILD_INTERFACE:${GLM_INCLUDE_DIRS}>)
 endif()
-target_include_directories(tinynurbs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
+target_include_directories(tinynurbs INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
 
 add_custom_target(tinynurbs_dummy SOURCES ${HEADER_FILES} CMakeLists.txt)
 
