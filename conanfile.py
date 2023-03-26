@@ -23,7 +23,7 @@ class SumConan(ConanFile):
 
     def requirements(self):
         self.requires("glm/[~0.9.9]")
-        self.test_requires("catch2/[~3.0]") #2.13
+        self.test_requires("catch2/[~2]") #2.13, #for ver3, it's not support gcc5 in conan recipe setting for catch2 ver3.
         self.build_requires("cmake/[>=3.22 <3.26]") #for catch2
 
     def layout(self):
