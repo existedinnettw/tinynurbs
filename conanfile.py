@@ -13,7 +13,7 @@ class SumConan(ConanFile):
     name = "tinynurbs"
     version = "0.1"
     settings = "os", "arch", "compiler", "build_type"
-    exports_sources = "include/*", "tests/*"
+    exports_sources = "include/*", "tests/*", "CMakeLists.txt", "cmake/*"
     # We can avoid copying the sources to the build folder in the cache
     no_copy_source = True
     generators = "CMakeToolchain", "CMakeDeps"
@@ -23,23 +23,36 @@ class SumConan(ConanFile):
 
     def requirements(self):
         self.requires("glm/[~0.9.9]")
-        self.test_requires("catch2/[~2.13]")
+        self.test_requires("catch2/[~3.0]") #2.13
+        self.build_requires("cmake/[>=3.22 <3.26]") #for catch2
 
     def layout(self):
         cmake_layout(self)
 
     def build(self):
+        cmake = CMake(self)
+        cmake.configure() #variables={"BUILD_TESTS":True}
+        # cmake.configure(build_script_folder="test")
+        cmake.build()
         if not self.conf.get("tools.build:skip_test", default=False):
-            cmake = CMake(self)
-            cmake.configure(build_script_folder="tests") #variables={"BUILD_TESTS":True}
-            # cmake.configure(build_script_folder=".")
-            cmake.build()
+            # cmake = CMake(self)
+            # cmake.configure() #variables={"BUILD_TESTS":True}
+            # # cmake.configure(build_script_folder="test")
+            # cmake.build()
             # self.run(os.path.join(self.cpp.build.bindir, "test_sum"))
             cmake.test()
 
     def package(self):
         # This will also copy the "include" folder
         copy(self, "*.h", self.source_folder, self.package_folder)
+        # cmake = CMake(self)
+        # cmake.install()
 
     def package_id(self):
         self.info.clear()
+
+    def package_info(self):
+        self.cpp_info.set_property("cmake_file_name", "tinynurbs")
+        self.cpp_info.set_property("cmake_target_name", "tinynurbs::tinynurbs")
+        # self.cpp_info.bindirs = []
+        # self.cpp_info.libdirs = []

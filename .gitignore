@@ -33,3 +33,5 @@
 
 # Other
 build/*
+CMakeUserPresets.json
+test_package/build/
